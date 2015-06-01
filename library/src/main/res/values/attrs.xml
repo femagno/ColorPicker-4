@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ColorPickerPalette">
+        <attr name="size" format="enum">
+            <enum name="Small" value="0"/>
+            <enum name="Large" value="1"/>
+        </attr>
+        <attr name="colors" format="reference" />
+        <attr name="circle_size" format="dimension" />
+        <attr name="circle_margin" format="dimension" />
+    </declare-styleable>
+</resources>

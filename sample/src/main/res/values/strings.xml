@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ColorPickerSample</string>
+    <string name="select_red">Select RED</string>
+    <string name="color_selected">Color selected</string>
+</resources>
