@@ -11,7 +11,7 @@
             android:id="@+id/colorpicker"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            app:colors="@array/sampleColors"
-            app:size="Small" />
+            app:size="Small"
+            app:gravity="center"/>
 
 </LinearLayout>

@@ -3,6 +3,8 @@ package ch.temparus.colorpicker;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +17,16 @@ import android.view.ViewGroup;
  */
 public class ColorPickerPalette extends ViewGroup {
 
+    public static final int GRAVITY_LEFT = 0;
+    public static final int GRAVITY_CENTER = 1;
+    public static final int GRAVITY_RIGHT = 2;
+
     public OnColorSelectedListener mOnColorSelectedListener;
     private ColorPickerCircle mSelectedColorCircle;
     private int mCircleSize;
     private int mCircleMargin;
+    private int mCircleDimension;
+    private int mGravity;
 
     /**
      * Interface for a callback when a color is selected.
@@ -40,6 +48,7 @@ public class ColorPickerPalette extends ViewGroup {
         final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPalette);
         final int id = array.getResourceId(R.styleable.ColorPickerPalette_colors, 0);
         final int size = array.getInt(R.styleable.ColorPickerPalette_size, 0);
+        mGravity = array.getInt(R.styleable.ColorPickerPalette_gravity, 0);
 
         Resources res = getResources();
         if(size == 0) {
@@ -50,9 +59,9 @@ public class ColorPickerPalette extends ViewGroup {
             mCircleSize = res.getDimensionPixelSize(R.dimen.color_circle_large);
         }
 
-        mCircleMargin = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_circle_margin, mCircleMargin);
+        mCircleMargin = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_circle_spacing, mCircleMargin*2) / 2;
         mCircleSize = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_circle_size, mCircleSize);
-
+        mCircleDimension = (mCircleSize + 2 * mCircleMargin);
         array.recycle();
 
         if (id != 0) {
@@ -143,29 +152,28 @@ public class ColorPickerPalette extends ViewGroup {
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        final int circleDimension = (mCircleSize + 2 * mCircleMargin);
         int paddingX = 0;
-        int numColumns;
+        int columnsCount;
         int width;
         int height;
 
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
-            paddingX = ((widthSize + 2 * mCircleMargin) % circleDimension) / 2;
+            paddingX = ((widthSize + 2 * mCircleMargin) % mCircleDimension) / 2;
         } else if (widthMode == MeasureSpec.AT_MOST) {
-            width = widthSize - ((widthSize + 2 * mCircleMargin) % circleDimension);
+            width = widthSize - ((widthSize + 2 * mCircleMargin) % mCircleDimension);
         } else {
-            width = childCount * circleDimension - 2 * mCircleMargin;
+            width = childCount * mCircleDimension - 2 * mCircleMargin;
         }
 
-        numColumns = (width + 2 * mCircleMargin) / circleDimension;
+        columnsCount = (width + 2 * mCircleMargin) / mCircleDimension;
 
         if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else {
-            height = childCount / numColumns * circleDimension - 2 * mCircleMargin;
-            if(childCount % numColumns > 0) {
-                height += circleDimension;
+            height = childCount / columnsCount * mCircleDimension - 2 * mCircleMargin;
+            if(childCount % columnsCount > 0) {
+                height += mCircleDimension;
             }
         }
         height += getPaddingTop() + getPaddingBottom();
@@ -181,23 +189,98 @@ public class ColorPickerPalette extends ViewGroup {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         final int childCount = getChildCount();
         final int width = right - left;
-        final int startLeft = getPaddingLeft();
-        final int circleDimension = (mCircleSize + 2 * mCircleMargin);
-        final int numColumns = (width + 2 * mCircleMargin) / circleDimension;
-        int positionLeft = startLeft;
+        final int paddingLeft = getPaddingLeft();
+        final int columnsCount = (width + 2 * mCircleMargin) / mCircleDimension;
         int positionTop = getPaddingTop();
+        int positionLeft = calculateLeftPosition(paddingLeft, childCount, columnsCount);
 
         for(int i = 0; i < childCount; ++i) {
             View child = getChildAt(i);
             child.setVisibility(VISIBLE);
             child.layout(positionLeft, positionTop, positionLeft + mCircleSize, positionTop + mCircleSize);
 
-            if((i+1) % numColumns == 0) {
-                positionLeft = startLeft;
-                positionTop += circleDimension;
+            if((i+1) % columnsCount == 0) {
+                positionLeft = calculateLeftPosition(paddingLeft, childCount - i - 1, columnsCount);
+                positionTop += mCircleDimension;
             } else {
-                positionLeft += circleDimension;
+                positionLeft += mCircleDimension;
             }
         }
+    }
+
+    private int calculateLeftPosition(int paddingLeft, int itemsCount, int columnsCount) {
+        if(itemsCount >= columnsCount || mGravity == GRAVITY_LEFT) {
+            return paddingLeft;
+        }
+        if(mGravity == GRAVITY_CENTER) {
+            return paddingLeft + (columnsCount - itemsCount) * mCircleDimension / 2;
+        }
+        if(mGravity == GRAVITY_RIGHT) {
+            return paddingLeft + (columnsCount - itemsCount) * mCircleDimension;
+        }
+        return paddingLeft;
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        SavedState savedState = new SavedState(super.onSaveInstanceState());
+        savedState.selectedColor = mSelectedColorCircle.getColor();
+        return savedState;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        if(!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+        SavedState savedState = (SavedState)state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+
+        if(savedState.selectedColor != null) {
+            int childCount = getChildCount();
+            for (int i = 0; i < childCount; ++i) {
+                ColorPickerCircle circle = (ColorPickerCircle) getChildAt(i);
+                if(circle.getColor() == savedState.selectedColor) {
+                    changeSelection(circle, false);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * SavedState of view holding selected color.
+     */
+    static class SavedState extends BaseSavedState {
+        Integer selectedColor;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+
+            selectedColor = in.readByte() == 0x00 ? null : in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeByte((byte) (selectedColor == null ? (0x00) : (0x01)));
+            if (selectedColor != null) out.writeInt(selectedColor);
+        }
+
+        //required field that makes Parcelables from a Parcel
+        public static final Parcelable.Creator<SavedState> CREATOR =
+            new Parcelable.Creator<SavedState>() {
+                public SavedState createFromParcel(Parcel in) {
+                    return new SavedState(in);
+                }
+                public SavedState[] newArray(int size) {
+                    return new SavedState[size];
+                }
+            };
     }
 }

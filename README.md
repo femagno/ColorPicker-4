@@ -23,11 +23,16 @@ Use the ColorPickerPallette view as follows:
 
 You have the following options to configure the view in the layout file:
 ```code
-app:size          'Small' or 'Large' (if not set, it uses 'Small')
-app:colors        reference to integer-array containing color values
-app:circle_size   diameter of circle (if not set, it uses the default value for option 'app:size')
-app:circle_margin space between circles (if not set, it uses the default values for option 'app:size')
+app:size            'Small' or 'Large' (default: 'Small')
+app:gravity         'left', 'center' or 'right' (default: 'left')
+app:colors          reference to integer-array containing color values
+app:circle_size     diameter of circle (default: values provided by 'size' option)
+app:circle_spacing  space between circles (default: values provided by 'size' option)
 ```
+
+## Change Log
+
+See [here]((https://github.com/sandrolutz/ColorPicker/blob/master/CHANGELOG.md)).
 
 ## License
 
