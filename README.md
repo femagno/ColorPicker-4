@@ -3,6 +3,24 @@ ColorPicker
 
 This is a simple color picker to select a color from a palette of colors.
 
+## Download
+
+gradle:
+
+```groovy
+compile 'ch.temparus.colorpicker:library:1.1.2'
+```
+
+Maven:
+```xml
+<dependency>
+  <groupId>ch.temparus.colorpicker</groupId>
+  <artifactId>library</artifactId>
+  <version>1.1.2</version>
+  <type>aar</type>
+</dependency>
+```
+
 ## Usage
 
 In the root node, you have to put this:
