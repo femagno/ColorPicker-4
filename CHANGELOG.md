@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## [1.1.1](https://github.com/sandrolutz/ColorPicker/tree/1.1.1) (2015-06-02)
+
+**Implemented enhancements:**
+
+- Add method ```clearSelection()``` to ColorPickerPalette.
+
+**Bugfixes:**
+
+- Add null check to ```onSaveInstanceState()``` to cover situation when no color is selected.
+
 ## [1.1.0](https://github.com/sandrolutz/ColorPicker/tree/1.1.0) (2015-06-02)
 
 **Implemented enhancements:**

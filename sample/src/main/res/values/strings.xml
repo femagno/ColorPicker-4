@@ -3,4 +3,5 @@
     <string name="app_name">ColorPickerSample</string>
     <string name="select_red">Select RED</string>
     <string name="color_selected">Color selected</string>
+    <string name="clear_selection">Clear selection</string>
 </resources>

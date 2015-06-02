@@ -18,7 +18,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         mColorPicker = (ColorPickerPalette) findViewById(R.id.colorpicker);
-        mColorPicker.setColorPalette(getResources().getIntArray(R.array.sampleColors), null);
         mColorPicker.setOnColorSelectedListener(new ColorPickerPalette.OnColorSelectedListener() {
             @Override
             public void onColorSelected(int color) {
@@ -40,6 +39,9 @@ public class MainActivity extends ActionBarActivity {
 
         if (id == R.id.action_select_red) {
             mColorPicker.selectColor(getResources().getColor(R.color.red));
+            return true;
+        } else if(id == R.id.action_clear_selection) {
+            mColorPicker.clearSelection();
             return true;
         }
 

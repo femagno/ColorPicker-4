@@ -4,4 +4,7 @@
     <item android:id="@+id/action_select_red"
           app:showAsAction="never"
           android:title="@string/select_red"/>
+    <item android:id="@+id/action_clear_selection"
+          app:showAsAction="never"
+          android:title="@string/clear_selection"/>
 </menu>

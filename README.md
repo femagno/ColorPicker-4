@@ -10,7 +10,7 @@ In the root node, you have to put this:
 xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
 
-Use the ColorPickerPallette view as follows:
+Use the ColorPickerPalette view as follows:
 
 ```xml
 <ch.temparus.colorpicker.ColorPickerPalette

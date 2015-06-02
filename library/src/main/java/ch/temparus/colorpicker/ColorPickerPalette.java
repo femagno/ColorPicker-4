@@ -101,6 +101,16 @@ public class ColorPickerPalette extends ViewGroup {
     }
 
     /**
+     * Clear selection.
+     */
+    public void clearSelection() {
+        if(mSelectedColorCircle != null) {
+            mSelectedColorCircle.setChecked(false);
+            mSelectedColorCircle = null;
+        }
+    }
+
+    /**
      * Set color palette for this {@link ColorPickerPalette}.
      *
      * @param colors
@@ -139,7 +149,7 @@ public class ColorPickerPalette extends ViewGroup {
             mSelectedColorCircle = newSelection;
             mSelectedColorCircle.setChecked(true);
 
-            if(dispatchEvent && mOnColorSelectedListener != null) {
+            if (dispatchEvent && mOnColorSelectedListener != null) {
                 mOnColorSelectedListener.onColorSelected(mSelectedColorCircle.getColor());
             }
         }
@@ -224,7 +234,7 @@ public class ColorPickerPalette extends ViewGroup {
     @Override
     public Parcelable onSaveInstanceState() {
         SavedState savedState = new SavedState(super.onSaveInstanceState());
-        savedState.selectedColor = mSelectedColorCircle.getColor();
+        savedState.selectedColor = (mSelectedColorCircle == null) ? null : mSelectedColorCircle.getColor();
         return savedState;
     }
 
