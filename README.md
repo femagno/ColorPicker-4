@@ -32,7 +32,7 @@ app:circle_spacing  space between circles (default: values provided by 'size' op
 
 ## Change Log
 
-See [here]((https://github.com/sandrolutz/ColorPicker/blob/master/CHANGELOG.md)).
+See [here](https://github.com/sandrolutz/ColorPicker/blob/master/CHANGELOG.md).
 
 ## License
 
