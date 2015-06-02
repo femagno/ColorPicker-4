@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+## [1.1.2](https://github.com/sandrolutz/ColorPicker/tree/1.1.2) (2015-06-02)
+
+**Implemented enhancements:**
+
+- Add method ```getSelectedColor()``` to ColorPickerPalette.
+
+
 ## [1.1.1](https://github.com/sandrolutz/ColorPicker/tree/1.1.1) (2015-06-02)
 
 **Implemented enhancements:**

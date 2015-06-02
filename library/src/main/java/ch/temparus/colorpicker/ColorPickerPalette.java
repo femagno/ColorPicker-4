@@ -111,6 +111,18 @@ public class ColorPickerPalette extends ViewGroup {
     }
 
     /**
+     * Get selected color
+     *
+     * @return color as integer or null if no color is selected
+     */
+    public Integer getSelectedColor() {
+        if(mSelectedColorCircle == null) {
+            return null;
+        }
+        return mSelectedColorCircle.getColor();
+    }
+
+    /**
      * Set color palette for this {@link ColorPickerPalette}.
      *
      * @param colors
