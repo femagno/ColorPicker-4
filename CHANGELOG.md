@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+## [1.1.3](https://github.com/sandrolutz/ColorPicker/tree/1.1.3) (2015-06-03)
+
+**Implemented enhancements:**
+
+- Add style option ```maxColumns``` to ColorPickerPalette.
+- Rename style options to ```circleSize``` and ```spacing```.
+- Renamed class ColorPickerCircle to ColorCircle
+- Add Constructors used by Android tools to ColorCircle.
+- Add style options for ColorCircle
+
 ## [1.1.2](https://github.com/sandrolutz/ColorPicker/tree/1.1.2) (2015-06-02)
 
 **Implemented enhancements:**

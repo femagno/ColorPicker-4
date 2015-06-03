@@ -10,8 +10,13 @@
             <enum name="Small" value="0"/>
             <enum name="Large" value="1"/>
         </attr>
+        <attr name="maxColumns" format="integer" />
         <attr name="colors" format="reference" />
-        <attr name="circle_size" format="dimension" />
-        <attr name="circle_spacing" format="dimension" />
+        <attr name="circleSize" format="dimension" />
+        <attr name="spacing" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="ColorCircle">
+        <attr name="circleColor" format="color" />
+        <attr name="checked" format="boolean" />
     </declare-styleable>
 </resources>

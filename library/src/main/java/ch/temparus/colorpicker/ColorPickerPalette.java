@@ -22,11 +22,12 @@ public class ColorPickerPalette extends ViewGroup {
     public static final int GRAVITY_RIGHT = 2;
 
     public OnColorSelectedListener mOnColorSelectedListener;
-    private ColorPickerCircle mSelectedColorCircle;
+    private ColorCircle mSelectedColorCircle;
     private int mCircleSize;
     private int mCircleMargin;
     private int mCircleDimension;
     private int mGravity;
+    private int mMaxColumns;
 
     /**
      * Interface for a callback when a color is selected.
@@ -49,6 +50,7 @@ public class ColorPickerPalette extends ViewGroup {
         final int id = array.getResourceId(R.styleable.ColorPickerPalette_colors, 0);
         final int size = array.getInt(R.styleable.ColorPickerPalette_size, 0);
         mGravity = array.getInt(R.styleable.ColorPickerPalette_gravity, 0);
+        mMaxColumns = array.getInt(R.styleable.ColorPickerPalette_maxColumns, 0);
 
         Resources res = getResources();
         if(size == 0) {
@@ -59,8 +61,8 @@ public class ColorPickerPalette extends ViewGroup {
             mCircleSize = res.getDimensionPixelSize(R.dimen.color_circle_large);
         }
 
-        mCircleMargin = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_circle_spacing, mCircleMargin*2) / 2;
-        mCircleSize = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_circle_size, mCircleSize);
+        mCircleMargin = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_spacing, mCircleMargin*2) / 2;
+        mCircleSize = array.getDimensionPixelSize(R.styleable.ColorPickerPalette_circleSize, mCircleSize);
         mCircleDimension = (mCircleSize + 2 * mCircleMargin);
         array.recycle();
 
@@ -85,10 +87,10 @@ public class ColorPickerPalette extends ViewGroup {
      */
     public void selectColor(int color) {
         int childCount = getChildCount();
-        ColorPickerCircle item = null;
+        ColorCircle item = null;
 
         for(int i = 0; i < childCount; ++i) {
-            ColorPickerCircle circle = (ColorPickerCircle) getChildAt(i);
+            ColorCircle circle = (ColorCircle) getChildAt(i);
             if(circle.getColor() == color) {
                 item = circle;
                 break;
@@ -139,11 +141,11 @@ public class ColorPickerPalette extends ViewGroup {
         for (int color : colors) {
             boolean isSelected = selectedColor != null && color == selectedColor && mSelectedColorCircle == null;
 
-            ColorPickerCircle circle = new ColorPickerCircle(getContext(), color, isSelected);
+            ColorCircle circle = new ColorCircle(getContext(), color, isSelected);
             circle.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    changeSelection((ColorPickerCircle) view, true);
+                    changeSelection((ColorCircle) view, true);
                 }
             });
             if (isSelected) {
@@ -153,7 +155,7 @@ public class ColorPickerPalette extends ViewGroup {
         }
     }
 
-    private void changeSelection(ColorPickerCircle newSelection, boolean dispatchEvent) {
+    private void changeSelection(ColorCircle newSelection, boolean dispatchEvent) {
         if(newSelection != mSelectedColorCircle) {
             if(mSelectedColorCircle != null) {
                 mSelectedColorCircle.setChecked(false);
@@ -190,6 +192,11 @@ public class ColorPickerPalette extends ViewGroup {
 
         columnsCount = (width + 2 * mCircleMargin) / mCircleDimension;
 
+        if(mMaxColumns > 0 && columnsCount > mMaxColumns) {
+            paddingX += (columnsCount - mMaxColumns) * mCircleDimension / 2;
+            columnsCount = mMaxColumns;
+        }
+
         if (heightMode == MeasureSpec.EXACTLY) {
             height = heightSize;
         } else {
@@ -212,9 +219,13 @@ public class ColorPickerPalette extends ViewGroup {
         final int childCount = getChildCount();
         final int width = right - left;
         final int paddingLeft = getPaddingLeft();
-        final int columnsCount = (width + 2 * mCircleMargin) / mCircleDimension;
+        int columnsCount = (width + 2 * mCircleMargin) / mCircleDimension;
         int positionTop = getPaddingTop();
         int positionLeft = calculateLeftPosition(paddingLeft, childCount, columnsCount);
+
+        if(mMaxColumns > 0 && columnsCount > mMaxColumns) {
+            columnsCount = mMaxColumns;
+        }
 
         for(int i = 0; i < childCount; ++i) {
             View child = getChildAt(i);
@@ -262,7 +273,7 @@ public class ColorPickerPalette extends ViewGroup {
         if(savedState.selectedColor != null) {
             int childCount = getChildCount();
             for (int i = 0; i < childCount; ++i) {
-                ColorPickerCircle circle = (ColorPickerCircle) getChildAt(i);
+                ColorCircle circle = (ColorCircle) getChildAt(i);
                 if(circle.getColor() == savedState.selectedColor) {
                     changeSelection(circle, false);
                     break;
