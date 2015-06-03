@@ -8,7 +8,7 @@ This is a simple color picker to select a color from a palette of colors.
 gradle:
 
 ```groovy
-compile 'ch.temparus.colorpicker:library:1.1.2'
+compile 'ch.temparus.colorpicker:library:1.1.3'
 ```
 
 Maven:
@@ -16,7 +16,7 @@ Maven:
 <dependency>
   <groupId>ch.temparus.colorpicker</groupId>
   <artifactId>library</artifactId>
-  <version>1.1.2</version>
+  <version>1.1.3</version>
   <type>aar</type>
 </dependency>
 ```
@@ -41,11 +41,11 @@ Use the ColorPickerPalette view as follows:
 
 You have the following options to configure the view in the layout file:
 ```code
-app:size            'Small' or 'Large' (default: 'Small')
-app:gravity         'left', 'center' or 'right' (default: 'left')
-app:colors          reference to integer-array containing color values
-app:circle_size     diameter of circle (default: values provided by 'size' option)
-app:circle_spacing  space between circles (default: values provided by 'size' option)
+app:size          'Small' or 'Large' (default: 'Small')
+app:gravity       'left', 'center' or 'right' (default: 'left')
+app:colors        reference to integer-array containing color values
+app:circleSize    diameter of circle (default: values provided by 'size' option)
+app:spacing       space between circles (default: values provided by 'size' option)
 ```
 
 ## Change Log
