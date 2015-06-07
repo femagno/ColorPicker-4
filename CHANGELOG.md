@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+## [1.2.0](https://github.com/sandrolutz/ColorPicker/tree/1.2.0) (2015-06-07)
+
+**Implemented enhancements:**
+
+- Add style option ```circleCheckmark``` to ColorPickerPalette.
+- Add style option ```checkmark``` to ColorCircle.
+- Replaced some deprecated method calls.
+
 ## [1.1.3](https://github.com/sandrolutz/ColorPicker/tree/1.1.3) (2015-06-03)
 
 **Implemented enhancements:**
