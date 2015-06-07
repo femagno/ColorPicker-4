@@ -29,20 +29,23 @@ public class ColorCircle extends FrameLayout {
 
         final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPalette);
         final int color = array.getColor(R.styleable.ColorCircle_circleColor, 0);
+        final Drawable icon = array.getDrawable(R.styleable.ColorCircle_circleSelectedIcon);
         final boolean checked = array.getBoolean(R.styleable.ColorCircle_checked, false);
 
         array.recycle();
 
         inflateLayout();
         setColor(color);
+        setIcon(icon);
         setChecked(checked);
     }
 
-    public ColorCircle(Context context, int color, boolean checked) {
+    public ColorCircle(Context context, int color, Drawable icon, boolean checked) {
         super(context);
 
         inflateLayout();
         setColor(color);
+        setIcon(icon);
         setChecked(checked);
     }
 
@@ -54,6 +57,10 @@ public class ColorCircle extends FrameLayout {
         mColor = color;
         Drawable[] colorDrawable = new Drawable[]{getContext().getResources().getDrawable(R.drawable.color_circle)};
         mCircleImage.setImageDrawable(new ColorStateDrawable(colorDrawable, color));
+    }
+
+    public void setIcon(Drawable icon) {
+        mSelectorImage.setImageDrawable((icon == null) ? getResources().getDrawable(R.drawable.ic_color_circle_selected) : icon);
     }
 
     /**

@@ -14,9 +14,11 @@
         <attr name="colors" format="reference" />
         <attr name="circleSize" format="dimension" />
         <attr name="spacing" format="dimension" />
+        <attr name="selectedIcon" format="reference" />
     </declare-styleable>
     <declare-styleable name="ColorCircle">
         <attr name="circleColor" format="color" />
         <attr name="checked" format="boolean" />
+        <attr name="circleSelectedIcon" format="reference" />
     </declare-styleable>
 </resources>

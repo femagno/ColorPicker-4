@@ -3,6 +3,7 @@ package ch.temparus.colorpicker;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -28,6 +29,7 @@ public class ColorPickerPalette extends ViewGroup {
     private int mCircleDimension;
     private int mGravity;
     private int mMaxColumns;
+    private Drawable mSelectedIcon;
 
     /**
      * Interface for a callback when a color is selected.
@@ -51,6 +53,7 @@ public class ColorPickerPalette extends ViewGroup {
         final int size = array.getInt(R.styleable.ColorPickerPalette_size, 0);
         mGravity = array.getInt(R.styleable.ColorPickerPalette_gravity, 0);
         mMaxColumns = array.getInt(R.styleable.ColorPickerPalette_maxColumns, 0);
+        mSelectedIcon = array.getDrawable(R.styleable.ColorPickerPalette_selectedIcon);
 
         Resources res = getResources();
         if(size == 0) {
@@ -141,7 +144,7 @@ public class ColorPickerPalette extends ViewGroup {
         for (int color : colors) {
             boolean isSelected = selectedColor != null && color == selectedColor && mSelectedColorCircle == null;
 
-            ColorCircle circle = new ColorCircle(getContext(), color, isSelected);
+            ColorCircle circle = new ColorCircle(getContext(), color, mSelectedIcon, isSelected);
             circle.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {

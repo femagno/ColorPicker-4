@@ -8,7 +8,6 @@
                android:id="@+id/color_selector"
                android:layout_width="match_parent"
                android:layout_height="match_parent"
-               android:src="@drawable/ic_color_circle_selected"
                android:scaleType="fitXY"
                android:visibility="gone" />
 </merge>
