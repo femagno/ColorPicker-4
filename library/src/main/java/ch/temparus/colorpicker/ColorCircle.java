@@ -3,6 +3,7 @@ package ch.temparus.colorpicker;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
  * Creates a color circle of a specified color. Adds a checkmark if marked as checked.
  *
  * @author Sandro Lutz
+ * @author Maurizio Pasquinelli
  */
 public class ColorCircle extends FrameLayout {
     private int mColor;
@@ -29,14 +31,23 @@ public class ColorCircle extends FrameLayout {
 
         final TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ColorPickerPalette);
         final int color = array.getColor(R.styleable.ColorCircle_circleColor, 0);
-        final Drawable icon = array.getDrawable(R.styleable.ColorCircle_circleSelectedIcon);
+        final Drawable icon = array.getDrawable(R.styleable.ColorCircle_checkmark);
         final boolean checked = array.getBoolean(R.styleable.ColorCircle_checked, false);
 
         array.recycle();
 
         inflateLayout();
         setColor(color);
-        setIcon(icon);
+        setCheckmarkDrawable(icon);
+        setChecked(checked);
+    }
+
+    public ColorCircle(Context context, int color, boolean checked) {
+        super(context);
+
+        inflateLayout();
+        setColor(color);
+        setCheckmarkDrawable(null);
         setChecked(checked);
     }
 
@@ -45,27 +56,32 @@ public class ColorCircle extends FrameLayout {
 
         inflateLayout();
         setColor(color);
-        setIcon(icon);
+        setCheckmarkDrawable(icon);
         setChecked(checked);
     }
 
     /**
      * set color of this {@link ColorCircle}
-     * @param color
+     *
+     * @param color background color of {@link ColorCircle}
      */
     public void setColor(int color) {
         mColor = color;
-        Drawable[] colorDrawable = new Drawable[]{getContext().getResources().getDrawable(R.drawable.color_circle)};
+        Drawable[] colorDrawable = new Drawable[]{ResourcesCompat.getDrawable(getResources(), R.drawable.color_circle, null)};
         mCircleImage.setImageDrawable(new ColorStateDrawable(colorDrawable, color));
     }
 
-    public void setIcon(Drawable icon) {
-        mSelectorImage.setImageDrawable((icon == null) ? getResources().getDrawable(R.drawable.ic_color_circle_selected) : icon);
+    /**
+     * Set icon for checkmark of this {@link ColorCircle}
+     *
+     * @param icon drawable is visible when {@link ColorCircle} is checked.
+     */
+    public void setCheckmarkDrawable(Drawable icon) {
+        mSelectorImage.setImageDrawable((icon == null) ? ResourcesCompat.getDrawable(getResources(), R.drawable.ic_color_circle_selected, null) : icon);
     }
 
     /**
      * Set checked status.
-     * @param checked
      */
     public void setChecked(boolean checked) {
         mChecked = checked;
@@ -79,7 +95,7 @@ public class ColorCircle extends FrameLayout {
     /**
      * Get color of this {@link ColorCircle}
      *
-     * @return
+     * @return Color as an integer value.
      */
     public int getColor() {
         return mColor;
@@ -87,8 +103,6 @@ public class ColorCircle extends FrameLayout {
 
     /**
      * Check if this circle is checked.
-     *
-     * @return
      */
     public boolean isChecked() {
         return mChecked;

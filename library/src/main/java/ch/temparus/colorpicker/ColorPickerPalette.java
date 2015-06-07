@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ public class ColorPickerPalette extends ViewGroup {
         final int size = array.getInt(R.styleable.ColorPickerPalette_size, 0);
         mGravity = array.getInt(R.styleable.ColorPickerPalette_gravity, 0);
         mMaxColumns = array.getInt(R.styleable.ColorPickerPalette_maxColumns, 0);
-        mSelectedIcon = array.getDrawable(R.styleable.ColorPickerPalette_selectedIcon);
+        mSelectedIcon = array.getDrawable(R.styleable.ColorPickerPalette_circleCheckmark);
 
         Resources res = getResources();
         if(size == 0) {
@@ -76,8 +77,6 @@ public class ColorPickerPalette extends ViewGroup {
 
     /**
      * Set OnColorSelectedListener. It gets called every time the user clicks on a color circle.
-     *
-     * @param listener
      */
     public void setOnColorSelectedListener(OnColorSelectedListener listener) {
         mOnColorSelectedListener = listener;
@@ -130,7 +129,7 @@ public class ColorPickerPalette extends ViewGroup {
     /**
      * Set color palette for this {@link ColorPickerPalette}.
      *
-     * @param colors
+     * @param colors array of color values
      * @param selectedColor Color which should be selected at the beginning. -1 to select nothing.
      */
     public void setColorPalette(int[] colors, Integer selectedColor) {
@@ -302,13 +301,12 @@ public class ColorPickerPalette extends ViewGroup {
         }
 
         @Override
-        public void writeToParcel(Parcel out, int flags) {
+        public void writeToParcel(@NonNull Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeByte((byte) (selectedColor == null ? (0x00) : (0x01)));
             if (selectedColor != null) out.writeInt(selectedColor);
         }
 
-        //required field that makes Parcelables from a Parcel
         public static final Parcelable.Creator<SavedState> CREATOR =
             new Parcelable.Creator<SavedState>() {
                 public SavedState createFromParcel(Parcel in) {
